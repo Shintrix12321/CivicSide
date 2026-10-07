@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicSide — Minecraft Server</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e6edf3;
+            overflow-x: hidden;
+        }
+
+        /* Background particles effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(88, 166, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(63, 185, 80, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 520px;
+            width: 90%;
+            padding: 2.5rem;
+            background: rgba(22, 27, 34, 0.85);
+            border: 1px solid rgba(48, 54, 61, 0.8);
+            border-radius: 20px;
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.03),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            text-align: center;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .server-name {
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #58a6ff 0%, #3fb950 50%, #58a6ff 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+        }
+
+        .subtitle {
+            color: #8b949e;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .status-card, .ip-card {
+            background: rgba(13, 17, 23, 0.6);
+            border: 1px solid rgba(48, 54, 61, 0.6);
+            border-radius: 14px;
+            padding: 1.4rem 1.6rem;
+            margin-bottom: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .status-card:hover, .ip-card:hover {
+            border-color: rgba(88, 166, 255, 0.3);
+            box-shadow: 0 0 20px rgba(88, 166, 255, 0.08);
+        }
+
+        .status-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .status-dot.online {
+            background: #3fb950;
+            box-shadow: 0 0 10px rgba(63, 185, 80, 0.6), 0 0 20px rgba(63, 185, 80, 0.3);
+            animation: pulse-green 2s ease-in-out infinite;
+        }
+
+        .status-dot.offline {
+            background: #f85149;
+            box-shadow: 0 0 10px rgba(248, 81, 73, 0.5);
+        }
+
+        @keyframes pulse-green {
+            0%, 100% { box-shadow: 0 0 10px rgba(63, 185, 80, 0.6), 0 0 20px rgba(63, 185, 80, 0.3); }
+            50% { box-shadow: 0 0 15px rgba(63, 185, 80, 0.8), 0 0 30px rgba(63, 185, 80, 0.4); }
+        }
+
+        .status-text {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #e6edf3;
+        }
+
+        .players-info {
+            font-size: 0.9rem;
+            color: #8b949e;
+            margin-top: 0.3rem;
+        }
+
+        .ip-label {
+            font-size: 0.85rem;
+            color: #8b949e;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ip-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .ip-address {
+            font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #58a6ff;
+            background: rgba(88, 166, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(88, 166, 255, 0.2);
+            letter-spacing: 0.5px;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #238636 0%, #2ea043 100%);
+            color: white;
+            border: none;
+            padding: 0.65rem 1.4rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(46, 160, 67, 0.3);
+        }
+
+        .copy-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(46, 160, 67, 0.45);
+            background: linear-gradient(135deg, #2ea043 0%, #3fb950 100%);
+        }
+
+        .copy-btn:hover::before {
+            left: 100%;
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(46, 160, 67, 0.3);
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(135deg, #1f6feb 0%, #388bfd 100%);
+            box-shadow: 0 4px 12px rgba(56, 139, 253, 0.3);
+        }
+
+        .footer {
+            margin-top: 1.8rem;
+            font-size: 0.8rem;
+            color: #484f58;
+        }
+
+        .loading {
+            color: #8b949e;
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .server-name {
+                font-size: 2.2rem;
+            }
+            .container {
+                padding: 1.8rem 1.4rem;
+            }
+            .ip-address {
+                font-size: 1.05rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="server-name">CivicSide</h1>
+        <p class="subtitle">Minecraft Server</p>
+
+        <!-- Status block -->
+        <div class="status-card">
+            <div class="status-header">
+                <span class="status-dot offline" id="statusDot"></span>
+                <span class="status-text" id="statusText">Загрузка...</span>
+            </div>
+            <div class="players-info" id="playersInfo"></div>
+        </div>
+
+        <!-- IP block -->
+        <div class="ip-card">
+            <div class="ip-label">IP-адрес сервера</div>
+            <div class="ip-row">
+                <span class="ip-address" id="serverIp">play.example.com</span>
+                <button class="copy-btn" id="copyBtn" onclick="copyIP()">Копировать IP</button>
+            </div>
+        </div>
+
+        <p class="footer">Статус обновляется автоматически каждые 30 секунд</p>
+    </div>
+
+    <script>
+        // ============================================
+        // ВПИШИ СЮДА IP СВОЕГО СЕРВЕРА:
+        // Например: "play.civicside.ru" или "123.45.67.89"
+        // ============================================
+        const SERVER_IP = "play.example.com";
+
+        // Отображаем IP на странице
+        document.getElementById('serverIp').textContent = SERVER_IP;
+
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const playersInfo = document.getElementById('playersInfo');
+        const copyBtn = document.getElementById('copyBtn');
+
+        async function fetchServerStatus() {
+            try {
+                // API: https://mcsrvstat.us/
+                const response = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}`);
+                const data = await response.json();
+
+                if (data.online) {
+                    statusDot.className = 'status-dot online';
+                    statusText.textContent = 'Сервер онлайн';
+                    const online = data.players?.online ?? 0;
+                    const max = data.players?.max ?? '?';
+                    playersInfo.textContent = `Онлайн: ${online} / ${max} игроков`;
+                } else {
+                    statusDot.className = 'status-dot offline';
+                    statusText.textContent = 'Сервер выключен';
+                    playersInfo.textContent = '';
+                }
+            } catch (error) {
+                console.error('Ошибка при получении статуса:', error);
+                statusDot.className = 'status-dot offline';
+                statusText.textContent = 'Не удалось получить статус';
+                playersInfo.textContent = '';
+            }
+        }
+
+        // Копирование IP
+        function copyIP() {
+            navigator.clipboard.writeText(SERVER_IP).then(() => {
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Скопировано!';
+                copyBtn.classList.add('copied');
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Не удалось скопировать:', err);
+                alert('Не удалось скопировать IP. Скопируйте вручную: ' + SERVER_IP);
+            });
+        }
+
+        // Первый запрос + автообновление каждые 30 секунд
+        fetchServerStatus();
+        setInterval(fetchServerStatus, 30000);
+    </script>
+</body>
+</html>
