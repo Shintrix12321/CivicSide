@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- force pages rebuild -->
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -30,7 +31,6 @@
             overflow-x: hidden;
         }
 
-        /* ===== Animated Minecraft-like background ===== */
         .bg-layer {
             position: fixed;
             inset: 0;
@@ -49,7 +49,6 @@
                 linear-gradient(180deg, #0a0e14 0%, #0d1520 40%, #0a1218 100%);
         }
 
-        /* Soft floating particles (grass / water feel) */
         .particle {
             position: absolute;
             width: 4px;
@@ -66,7 +65,6 @@
             100% { transform: translateY(-20vh) scale(1); opacity: 0; }
         }
 
-        /* Water-like subtle wave overlay */
         .wave-overlay {
             position: absolute;
             bottom: 0;
@@ -83,7 +81,6 @@
             100% { transform: translateX(-25%); }
         }
 
-        /* ===== Navigation ===== */
         .navbar {
             position: fixed;
             top: 0;
@@ -129,12 +126,8 @@
             box-shadow: 0 0 20px rgba(63, 185, 80, 0.1);
         }
 
-        .nav-icon {
-            font-size: 1.1rem;
-            line-height: 1;
-        }
+        .nav-icon { font-size: 1.1rem; line-height: 1; }
 
-        /* ===== Main content ===== */
         .main {
             position: relative;
             z-index: 1;
@@ -151,20 +144,14 @@
             padding: 0 1.25rem;
         }
 
-        .section.active {
-            display: block;
-        }
+        .section.active { display: block; }
 
         @keyframes fadeSection {
             from { opacity: 0; transform: translateY(16px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== Home ===== */
-        .hero {
-            text-align: center;
-            padding: 2rem 0 1.5rem;
-        }
+        .hero { text-align: center; padding: 2rem 0 1.5rem; }
 
         .server-name {
             font-size: clamp(2.6rem, 8vw, 3.6rem);
@@ -184,11 +171,7 @@
             50% { background-position: 100% center; }
         }
 
-        .hero-sub {
-            color: var(--text-muted);
-            font-size: 1.05rem;
-            margin-bottom: 2.2rem;
-        }
+        .hero-sub { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 2.2rem; }
 
         .card {
             background: var(--bg-panel);
@@ -335,7 +318,6 @@
             margin-top: 1.5rem;
         }
 
-        /* ===== News ===== */
         .section-title {
             font-size: 1.7rem;
             font-weight: 700;
@@ -361,25 +343,10 @@
             transform: translateY(-2px);
         }
 
-        .news-date {
-            font-size: 0.8rem;
-            color: var(--accent);
-            margin-bottom: 0.35rem;
-        }
+        .news-date { font-size: 0.8rem; color: var(--accent); margin-bottom: 0.35rem; }
+        .news-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; }
+        .news-text { font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; }
 
-        .news-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.4rem;
-        }
-
-        .news-text {
-            font-size: 0.92rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        /* ===== Support form ===== */
         .form-card {
             background: var(--bg-panel);
             border: 1px solid var(--border);
@@ -410,9 +377,7 @@
             border-radius: 2px;
         }
 
-        .form-group {
-            margin-bottom: 1.15rem;
-        }
+        .form-group { margin-bottom: 1.15rem; }
 
         .form-label {
             display: block;
@@ -442,10 +407,7 @@
             box-shadow: 0 0 0 3px rgba(63, 185, 80, 0.15);
         }
 
-        .form-textarea {
-            min-height: 110px;
-            resize: vertical;
-        }
+        .form-textarea { min-height: 110px; resize: vertical; }
 
         .upload-zone {
             border: 1.5px dashed rgba(63, 185, 80, 0.3);
@@ -465,16 +427,9 @@
             color: var(--text);
         }
 
-        .upload-zone.has-file {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
+        .upload-zone.has-file { border-color: var(--accent); color: var(--accent); }
 
-        .upload-icon {
-            font-size: 1.6rem;
-            margin-bottom: 0.4rem;
-            display: block;
-        }
+        .upload-icon { font-size: 1.6rem; margin-bottom: 0.4rem; display: block; }
 
         .checkbox-row {
             display: flex;
@@ -495,22 +450,12 @@
             flex-shrink: 0;
         }
 
-        .form-success {
-            display: none;
-            text-align: center;
-            padding: 2rem 1rem;
-            color: var(--accent);
-        }
-
+        .form-success { display: none; text-align: center; padding: 2rem 1rem; color: var(--accent); }
         .form-success.show { display: block; }
         .form-body.hide { display: none; }
 
-        /* ===== Status section ===== */
-        .status-big {
-            text-align: center;
-        }
+        .status-big { text-align: center; }
 
-        /* Responsive */
         @media (max-width: 600px) {
             .navbar {
                 gap: 0;
@@ -529,14 +474,11 @@
     </style>
 </head>
 <body>
-    <!-- Animated background -->
     <div class="bg-layer">
         <div class="bg-gradient"></div>
         <div class="wave-overlay"></div>
-        <!-- particles generated by JS -->
     </div>
 
-    <!-- Navigation -->
     <nav class="navbar">
         <a class="nav-item active" data-section="home">
             <span class="nav-icon">🏠</span> Главная
@@ -553,7 +495,6 @@
     </nav>
 
     <main class="main">
-        <!-- HOME -->
         <section id="home" class="section active">
             <div class="hero">
                 <h1 class="server-name">CivicSide</h1>
@@ -579,7 +520,6 @@
             <p class="footer-note">Статус обновляется автоматически каждые 30 секунд</p>
         </section>
 
-        <!-- NEWS -->
         <section id="news" class="section">
             <h2 class="section-title">Новости сервера</h2>
 
@@ -602,7 +542,6 @@
             </div>
         </section>
 
-        <!-- SUPPORT / REPORT -->
         <section id="support" class="section">
             <div class="form-card">
                 <div class="form-logo">CIVICSIDE</div>
@@ -648,7 +587,6 @@
             </div>
         </section>
 
-        <!-- STATUS -->
         <section id="status" class="section">
             <h2 class="section-title">Статус серверов</h2>
 
@@ -670,12 +608,8 @@
     </main>
 
     <script>
-        // ============================================
-        // IP сервера CivicSide
-        // ============================================
         const SERVER_IP = "civicside.falix.gg";
 
-        // Particles (grass / water feel)
         (function createParticles() {
             const layer = document.querySelector('.bg-layer');
             for (let i = 0; i < 28; i++) {
@@ -692,7 +626,6 @@
             }
         })();
 
-        // Navigation
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', () => {
                 document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -702,7 +635,6 @@
             });
         });
 
-        // Status elements
         const statusDot = document.getElementById('statusDot');
         const statusText = document.getElementById('statusText');
         const playersInfo = document.getElementById('playersInfo');
@@ -757,7 +689,6 @@
             }).catch(() => alert('IP: ' + SERVER_IP));
         }
 
-        // Upload zone
         const uploadZone = document.getElementById('uploadZone');
         const reportFile = document.getElementById('reportFile');
         const uploadText = document.getElementById('uploadText');
@@ -785,31 +716,19 @@
             uploadZone.classList.add('has-file');
         }
 
-        // Submit report (frontend demo)
         function submitReport() {
             const nick = document.getElementById('reportNick').value.trim();
             const desc = document.getElementById('reportDesc').value.trim();
             const check = document.getElementById('reportCheck').checked;
 
-            if (!nick) {
-                alert('Введите ваш ник');
-                return;
-            }
-            if (!desc) {
-                alert('Опишите проблему');
-                return;
-            }
-            if (!check) {
-                alert('Подтвердите, что скриншот не содержит запрещённого контента');
-                return;
-            }
+            if (!nick) { alert('Введите ваш ник'); return; }
+            if (!desc) { alert('Опишите проблему'); return; }
+            if (!check) { alert('Подтвердите, что скриншот не содержит запрещённого контента'); return; }
 
-            // Здесь можно подключить Formspree / Discord Webhook / backend
             document.getElementById('formBody').classList.add('hide');
             document.getElementById('formSuccess').classList.add('show');
         }
 
-        // Init
         fetchServerStatus();
         setInterval(fetchServerStatus, 30000);
     </script>
